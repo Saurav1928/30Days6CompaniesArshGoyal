@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Solution
+{
+public:
+    vector<vector<int>> highestPeak(vector<vector<int>> &isWater)
+    {
+
+        int n = isWater.size(), m = isWater[0].size();
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+        vector<vector<int>> ans(n, vector<int>(m, 0));
+        queue<vector<int>> Q;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (isWater[i][j] == 1)
+                {
+                    vis[i][j] = true;
+                    Q.push({i, j, 0});
+                }
+            }
+        }
+        vector<int> row = {-1, 0, 1, 0};
+        vector<int> col = {0, 1, 0, -1};
+
+        while (!Q.empty())
+        {
+            vector<int> curr = Q.front();
+            Q.pop();
+            int i = curr[0], j = curr[1], val = curr[2];
+            vis[i][j] = true;
+            ans[i][j] = val;
+            for (int k = 0; k < 4; k++)
+            {
+                int nr = i + row[k];
+                int nc = j + col[k];
+                if (nr >= 0 and nr < n and nc >= 0 and nc < m and vis[nr][nc] == false)
+                {
+                    vis[nr][nc] = true;
+                    Q.push({nr, nc, val + 1});
+                }
+            }
+        }
+        return ans;
+    }
+};
