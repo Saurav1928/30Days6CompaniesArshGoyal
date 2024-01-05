@@ -1,0 +1,57 @@
+// Intution and approach
+ /* 
+ here, for Node to be a BST, its left and right subtree must be in BST
+ condition : max(left subtree)< node <min(right Subtree) and hence we need max and min values of a subtree, 
+ also if subtree is a BST we need to carrry sum as well, because it may possible, its parent may also be in BST 
+ so along with max and min , we need to carry sum of bst as well.
+return a vector => {min, max, sum}
+ Approach:
+ 1. base case: if(root ---> null) i.e. its always considered in BST, so 
+
+          (node)
+            /\
+           2  5
+    
+    2 is a leaf node, when 2s left is called, so for bst , left max must be smaller than root node, 
+    suppose left= {m , n, o }, right={a, b, c} =>  2s left min i.e. m must be INT_MIN, because to satisfy bst 
+    max(left)< (node=2) < min(right) => i.e. max(left) must be INT_MIN, and max(right) must be INT_MAX for satisfying the     
+    condition
+    hence return min value = INT_MAX , max= INT_MIN and there are no child so sum(left)=0, same for right
+
+
+    in case of the subtree is not bst, i.e max(left)<node<min(right) is failed,   and hence if that condition failse, it must 
+    tell its parent that the subtree is not the bst and hence return {INT_MIN, INT_MAX, 0}; 
+
+
+
+ */
+class Solution {
+public:
+int ans=0;
+
+// min, max, sum
+
+vector<int> dfs(TreeNode* root){
+    if(root==NULL)
+    {
+        return {INT_MAX, INT_MIN, 0};
+    }
+    vector<int>left= dfs(root->left);
+    vector<int>right= dfs(root->right);
+    if(left[1]< root->val  and root->val <right[0])
+    {
+        int newMin=min(root->val, left[0]);// because left[0] will be a last min value,
+        int newMax=max(root->val, right[1]);
+        int sum=left[2]+right[2]+root->val;
+        ans= max(ans, sum);
+        return {newMin, newMax, sum};
+    }
+    else{
+        return {INT_MIN, INT_MAX, 0};
+    }
+}
+    int maxSumBST(TreeNode* root) {
+        vector<int>res=dfs(root);
+        return ans;
+    }
+};
