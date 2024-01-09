@@ -1,0 +1,37 @@
+class Solution {
+public:
+
+bool checkStrictlyIncreasing(vector<int>v){
+    if(v.size()==0)
+    return true;
+    int n=v.size();
+
+    for(int i=0;i<n-1;i++)
+    {
+        if(v[i]>=v[i+1])
+        return false;
+    }
+    return true;
+}
+    int incremovableSubarrayCount(vector<int>& nums) {
+        int n=nums.size();
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i;j<n;j++)
+            {
+                vector<int>v;
+                for(int k=0;k<n;k++)
+                {
+                    //if my index is not in range of i to j  (i.e. out of subarray index range ) -> this element will be remain in array and need to check weather ,
+                    //remaining elements are in strictly inc order or not
+                    if(k<i or k>j)
+                    v.push_back(nums[k]);
+                }
+                if(checkStrictlyIncreasing(v))
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
