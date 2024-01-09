@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        int i = 0, j = s.length() - 1;
+        while (i < j) {
+            if (s[i] != s[j])
+                return false;
+            i++, j--;
+        }
+        return true;
+    }
+    void solve(string s, string s1, string s2, int ind, int& ans) {
+        if (ind >= s.length()) {
+            if (isPalindrome(s1) and isPalindrome(s2)) {
+                int prod = s1.length() * s2.length();
+                ans = max(ans, prod);
+            }
+            return;
+        }
+        // pick s[i] for s1 and not for s2
+        solve(s, s1 + s[ind], s2, ind + 1, ans);
+        // pick s[i] for s2 and not for s1
+        solve(s, s1, s2 + s[ind], ind + 1, ans);
+        // dont pick for both s1 and s2
+        solve(s, s1, s2, ind + 1, ans);
+        return;
+    }
+    int maxProduct(string s) {
+        int ans = INT_MIN;
+        solve(s, "", "", 0, ans);
+        return ans;
+    }
+};
