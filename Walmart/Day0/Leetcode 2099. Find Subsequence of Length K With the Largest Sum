@@ -1,0 +1,27 @@
+class Solution {
+public:
+
+//aprocah: subsequnce hai so continued nhi hoga toh bhi chalega and maximize krna hai sum so, lets pick K maximum numbers, 
+// so sort the vector and pick last k
+// BUT, as mentioned, SUBSEQUENCE, while returning the ans, order of picked elements must be same as in original array, so maintained a vector of pair <value, original_index>
+// uske baad, last K elements lo, and un k elements ko index ke according return krna hai, so sorted according to index i.e. 2nd value of pair
+
+static bool compare(const pair<int, int>& a, const pair<int, int>& b) {
+  return a.second < b.second;
+}
+    vector<int> maxSubsequence(vector<int>& nums, int k) {
+        vector<pair<int, int>>vp;
+        int n=nums.size();
+        for(int i=0;i<n;i++)
+            vp.push_back({nums[i], i});
+        sort(vp.begin(), vp.end());
+
+       vector<pair<int, int>>tmp= vector<pair<int, int>>(vp.begin()+n-k, vp.end());
+        sort(tmp.begin(), tmp.end(), compare);
+        vector<int>ans;
+        for(auto it:tmp)
+        ans.push_back(it.first);
+        return ans;
+
+    }
+};
