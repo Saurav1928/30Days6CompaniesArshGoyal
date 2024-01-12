@@ -1,0 +1,37 @@
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        vector<vector<  long long >>dist(26, vector< long long >(26, 1e9));
+        int n=original.size();
+        for(int i=0;i<n;i++)
+        {
+              long long  u=original[i]-'a';
+              long long  v= changed[i]-'a';
+              long long  wt=cost[i];
+            dist[u][v]=min(dist[u][v], wt);/// this line is important
+            dist[u][u]=0;
+            dist[v][v]=0;
+        }
+
+        for(int k=0;k<26;k++)
+        {
+            for(int i=0;i<26;i++)
+            {
+                for(int j=0;j<26;j++)
+                {
+                    if(dist[i][k]==1e9 or dist[k][j]==1e9)
+                    continue;
+                    dist[i][j]=min((long long)dist[i][j], (long long)dist[i][k]+dist[k][j]);
+                }
+            }
+        }
+          long long  ans=0;
+        for(int i=0;i<source.size();i++){
+            long long d=(dist[source[i]-'a'][target[i]-'a']);;
+            if((dist[source[i]-'a'][target[i]-'a'])==1e9)
+            return -1;
+            ans+=d;
+        }
+        return ans;
+    }
+};
