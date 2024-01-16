@@ -1,0 +1,23 @@
+class Solution {
+public:
+static bool cmp(string &a, string &b)
+{
+    return a.length()>b.length();
+}
+    int minimumLengthEncoding(vector<string>& words) {
+        sort(words.begin(), words.end(), cmp);
+        string ans=words[0]+'#';
+        for(int i=1;i<words.size();i++){
+            
+            auto pos=ans.find(words[i]+"#");
+            if(pos!=(string::npos))
+                continue;
+            else
+                ans+=words[i]+"#";
+            
+        }
+        
+        return ans.length();
+        return 1;
+    }
+};
