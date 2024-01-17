@@ -1,29 +1,66 @@
+// Approach 1: using BFS
+/*
+if main agar i, j position pr hu toh mere lie sabse karib toh mere neighbours
+honge (verical and horizontal ) and hence vertical and hori vale sare neighbour
+ko at a time add kr denge and then go for their neighbors,
+
+*/
 class Solution {
 public:
-    vector<vector<int>> allCellsDistOrder(int rows, int cols, int rCenter, int cCenter) {
-        queue<vector<int>>Q;
-         vector<vector<int>>ans;
-        vector<vector<int>>vis(rows, vector<int>(cols, -1));
-        vector<pair<int, int>>move={{-1, 0}, {0, 1}, {1, 0}, {0,-1}};
-        vector<int>v={rCenter, cCenter};
+    vector<vector<int>> allCellsDistOrder(int rows, int cols, int rCenter,
+                                          int cCenter) {
+        queue<vector<int>> Q;
+        vector<vector<int>> ans;
+        vector<vector<int>> vis(rows, vector<int>(cols, -1));
+        vector<pair<int, int>> move = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        vector<int> v = {rCenter, cCenter};
         ans.push_back(v);
         Q.push(v);
-        vis[rCenter][cCenter]=1;
-        while(!Q.empty()){
-           vector<int>tmp=Q.front();
+        vis[rCenter][cCenter] = 1;
+        while (!Q.empty()) {
+            vector<int> tmp = Q.front();
             Q.pop();
-            int currRow=tmp[0], currCol=tmp[1];
-            for(auto m:move){
-                int nr=m.first+currRow, nc=m.second+currCol;
-                if(nr>=0 and nr<rows and nc>=0 and nc<cols and vis[nr][nc]==-1)
-                {
-                    vector<int>t={nr, nc};
-                    vis[nr][nc]=1;
+            int currRow = tmp[0], currCol = tmp[1];
+            for (auto m : move) {
+                int nr = m.first + currRow, nc = m.second + currCol;
+                if (nr >= 0 and nr < rows and nc >= 0 and nc < cols and
+                    vis[nr][nc] == -1) {
+                    vector<int> t = {nr, nc};
+                    vis[nr][nc] = 1;
                     ans.push_back(t);
                     Q.push({nr, nc});
                 }
             }
         }
+        return ans;
+    }
+};
+
+// Approach2: Using vector<pair_of_ind{i, j}, dist_from_centre>
+// for each posn (i, j) -> stored the dist of (i, j) from( rc, cc) so {i, j} ->
+// dist and then sorted on basis of dist. then ab hamare pass inc order of dist
+// mein indices present hai which we want, store this in ans
+
+class Solution {
+public:
+    static bool cmp(pair<pair<int, int>, int>& a,
+                    pair<pair<int, int>, int>& b) {
+        return a.second < b.second;
+    }
+    vector<vector<int>> allCellsDistOrder(int rows, int cols, int rCenter,
+                                          int cCenter) {
+        vector<pair<pair<int, int>, int>> vp;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                pair<int, int> pr = {i, j};
+                int dist = abs(i - rCenter) + abs(j - cCenter);
+                vp.push_back({pr, dist});
+            }
+        }
+        sort(vp.begin(), vp.end(), cmp);
+        vector<vector<int>> ans;
+        for (auto pr : vp)
+            ans.push_back({pr.first.first, pr.first.second});
         return ans;
     }
 };
