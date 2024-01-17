@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> allCellsDistOrder(int rows, int cols, int rCenter, int cCenter) {
+        queue<vector<int>>Q;
+         vector<vector<int>>ans;
+        vector<vector<int>>vis(rows, vector<int>(cols, -1));
+        vector<pair<int, int>>move={{-1, 0}, {0, 1}, {1, 0}, {0,-1}};
+        vector<int>v={rCenter, cCenter};
+        ans.push_back(v);
+        Q.push(v);
+        vis[rCenter][cCenter]=1;
+        while(!Q.empty()){
+           vector<int>tmp=Q.front();
+            Q.pop();
+            int currRow=tmp[0], currCol=tmp[1];
+            for(auto m:move){
+                int nr=m.first+currRow, nc=m.second+currCol;
+                if(nr>=0 and nr<rows and nc>=0 and nc<cols and vis[nr][nc]==-1)
+                {
+                    vector<int>t={nr, nc};
+                    vis[nr][nc]=1;
+                    ans.push_back(t);
+                    Q.push({nr, nc});
+                }
+            }
+        }
+        return ans;
+    }
+};
