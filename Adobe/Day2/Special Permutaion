@@ -1,0 +1,27 @@
+// mask -> 0 0 0 0  -> none of number is yet taken
+// mask= 5  -> 101
+//             210 => values nums[0] and nums[1] are taken
+
+class Solution {
+public:
+int mod=1e9+7;
+    int solve(int prev, int n, vector<int>& nums, int cnt, int mask, vector<vector<int>>&dp) {
+        if (cnt == n)
+            return 1;
+        int ans = 0;
+        if(dp[prev][mask]!=-1) return dp[prev][mask];
+        for (int j = 0; j < n; j++) {
+            if(mask & (1<<j)) continue; // here I was making mistake
+            if (mask == 0 or nums[prev] % nums[j] == 0 or nums[j] % nums[prev] == 0)
+                ans=(ans+ solve(j, n, nums, cnt + 1, mask | (1 << j), dp))%mod;
+        }
+        return dp[prev][mask]=ans;
+    }
+    int specialPerm(vector<int>& nums) {
+        int mask = 0;
+        int n=nums.size();
+int maxMask=16383; // all 14 bits are set, i.e all 14 bits are taken -> all 14 indexes are used and hence 111111111111 (14bits) = 16383
+        vector<vector<int>>dp(50, vector<int>(maxMask, -1));
+        return solve(0, n, nums, 0, mask, dp)%mod;
+    }
+};
