@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        map<int, pair<int, int>>mp;
+        for(auto match:matches)
+        {
+            int winner=match[0];
+            int looser= match[1];
+            mp[winner].first++;
+            mp[looser].second--;
+        }
+        vector<vector<int>>ans;
+        vector<int>w, l;
+        for(auto player:mp){
+            cout<<player.first<<" : "<<player.second.first<<" "<<player.second.second<<endl;
+                if(player.second.second==0)
+                w.push_back(player.first);
+                if(player.second.second==-1)
+                l.push_back(player.first);
+        }
+        ans.push_back(w);
+        ans.push_back(l);
+      return ans;
+
+    }
+};
